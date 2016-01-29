@@ -1,0 +1,104 @@
+@media screen and (max-width: 950px){
+	#sidebar{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 80px;
+	}
+	#sidebar span{
+    	vertical-align: top;
+    	line-height: 2;
+    	padding: 5px;
+	}
+	#content{
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 80px;
+		width: 100%;
+		height: 580px;
+	}
+	#sidebar ul{
+		width: 100%;
+	}
+	#sidebar ul li{
+		height: 50px;
+		line-height: 50px;
+		cursor: pointer;
+		overflow-x:scroll;
+		display: inline-block;
+		border: 1px solid white;
+	}
+}
+@media screen and (min-width: 949px){
+	#sidebar{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 20%;
+		height: 580px;
+	}
+	#content{
+		position: absolute;
+		left: 20%;
+		right: 0;
+		top: 0;
+		width: 80%;
+		height: 580px;
+	}
+}
+body{
+	font-family: Verdana;
+}
+#main{
+	position: relative;
+	width: 100%;
+}
+#sidebar{
+	/*float: left;*/
+	background-color: #232323;
+	color: white;
+	border: 1px solid black;
+}
+#sidebar span{
+	margin-bottom: 5px;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 1.3em;
+}
+#sidebar ul{
+	list-style: none;
+}
+#sidebar ul li{
+	height: 50px;
+	line-height: 50px;
+	cursor: pointer;
+	overflow-x:scroll; 
+}
+#sidebar ul li:hover{
+	font-weight: bold;
+	background-color: #313131
+}
+#content{
+	/*float: left;*/
+	border: 1px solid black; 
+	text-align: center;
+}
+#content h2{
+	margin: auto;
+}
+#content div{
+	border: 1px solid black;
+	height: 475px;
+}
+#content div{
+	display: none;
+}
+#content div.show{
+	display: block;
+}
+div{
+	box-sizing:border-box;
+	padding: 5px;
+}

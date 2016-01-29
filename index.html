@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Expense Manager</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<div id="header">
+		<h1>Expense Manager</h1>
+		<hr>
+	</div>
+	<div id="main">
+		<div id="sidebar" data-module="sidebar-menu">
+			<ul>
+				<span>Menu</span>
+				<li data-type="new-transaction">New Transaction</li>
+				<li data-type="calculator">Calculator</li>
+				<li data-type="calendar">Calendar</li>
+				<li data-type="summary">Summary</li>
+				<li data-type="switch-account">Switch Accounts</li>
+				<li data-type="add-category">Add Category</li>
+				<li data-type="add-account">Add Account</li>
+			</ul>
+		</div>
+		<div id="content">
+			<h2>Title of View</h2>
+			<h4 id="account-selected">Account Selected</h4>
+			<div data-module="new-transaction">A</div>
+			<div data-module="calculator">B</div>
+			<div data-module="calendar">C</div>
+			<div data-module="summary">D</div>
+			<div data-module="switch-account">E</div>
+			<div data-module="add-category">F</div>
+			<div data-module="add-account">G</div>
+		</div>
+	</div>
+	<!-- Jquery -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery-color.js"></script>
+	<!-- T3 -->
+	<script type="text/javascript" src="js/t3.js"></script>
+	<!-- Modules -->
+	<script type="text/javascript" src="js/modules/sidebar-menu.js"></script>
+	<script type="text/javascript" src="js/modules/new-transaction.js"></script>
+	<script type="text/javascript" src="js/modules/calculator.js"></script>
+	<script type="text/javascript" src="js/modules/calendar.js"></script>
+	<script type="text/javascript" src="js/modules/summary.js"></script>
+	<script type="text/javascript" src="js/modules/add-category.js"></script>
+	<script type="text/javascript" src="js/modules/switch-account.js"></script>
+	<script type="text/javascript" src="js/modules/add-account.js"></script>
+	<!-- Services -->
+	<script type="text/javascript" src="js/services/db.js"></script>
+	<script type="text/javascript" src="js/services/utilities.js"></script>
+	<!-- Script -->
+	<script type="text/javascript" src="js/script.js"></script>
+</body>
+</html>
