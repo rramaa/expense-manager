@@ -47,13 +47,13 @@ Box.Application.addService('utilities',function(application){
 		},
 		createElement:function(type,innerHTML,id,Class,dataType,dataNoteId){
 			var element=document.createElement(type);
-			if(innerHTML)
+			if(innerHTML || innerHTML==0)
 				element.innerHTML=innerHTML;
-			if(id)
+			if(id || id==0)
 				element.setAttribute('id',id);
 			if(Class)
 				element.setAttribute('class',Class);
-			if(dataType)
+			if(dataType || dataType==0)
 				element.setAttribute('data-type',dataType);
 			if(dataNoteId)
 				element.setAttribute('data-note-id',dataNoteId);
