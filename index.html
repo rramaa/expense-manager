@@ -27,13 +27,13 @@
 		<div id="content">
 			<h2 id="view-title">Title of View</h2>
 			<h4 id="account-selected">Account Selected</h4>
-			<div data-module="new-transaction">A</div>
-			<div data-module="calculator">B</div>
-			<div data-module="calendar">C</div>
-			<div data-module="summary">D</div>
-			<div data-module="switch-account">E</div>
-			<div data-module="add-category">F</div>
-			<div data-module="add-account">G</div>
+			<div data-module-name="new-transaction"></div>
+			<div data-module-name="calculator"></div>
+			<div data-module-name="calendar">C</div>
+			<div data-module-name="summary">D</div>
+			<div data-module-name="switch-account"></div>
+			<div data-module-name="add-category"></div>
+			<div data-module-name="add-account"></div>
 		</div>
 	</div>
 	<!-- Jquery -->
@@ -52,9 +52,11 @@
 	<script type="text/javascript" src="js/modules/add-account.js"></script>
 	<!-- Services -->
 	<script type="text/javascript" src="js/services/db.js"></script>
+	<script type="text/javascript" src="js/services/globals.js"></script>
 	<script type="text/javascript" src="js/services/utilities.js"></script>
 	<!-- Script -->
-	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -26,12 +26,16 @@ Box.Application.addModule('add-category',function(context){
 		addCategory:function(value){
 			if(value!=""){
 				value=utilities.capitalizeFirstLetter(value);
-				var category=new Category(categories.count,value);
-				categories.count++;
-				categories.data.push(category);
-				db.setData('categories',categories);
-				utilities.updateCategory();
-				context.broadcast('categoryAdded',category);
+				value=utilities.cleanUp(value);
+				if(utilities.isUnique(categories,value)){
+					var category=new Category(categories.count,value);
+					categories.count++;
+					categories.data.push(category);
+					db.setData('categories',categories);
+					// console.log(categories);
+					utilities.updateCategory();
+					context.broadcast('categoryAdded',category);
+				}
 			}
 		},
 		onclick:function(event,element,elementType){
@@ -49,6 +53,7 @@ Box.Application.addModule('add-category',function(context){
 		onkeydown:function(event,element,elementType){
 			if(event.keyCode==13){
 				if(elementType=="add-category-input"){
+					var inputEl=moduleElement.querySelector('[data-type="add-category-input"]');
 					context.broadcast('addCategory',inputEl.value);
 					element.value="";
 				}

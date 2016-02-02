@@ -149,6 +149,11 @@ input{
 a{
 	cursor: pointer;
 }
+.switch-account-div, .switch-account-div div{
+	display: inline-block !important;
+	height: auto !important;
+	border: none !important;
+}
 .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
 }
@@ -159,7 +164,6 @@ a{
     border: none;
     border-radius: 0px;
 }
- 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
     background: #313131;
 }

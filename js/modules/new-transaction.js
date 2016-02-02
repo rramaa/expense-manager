@@ -8,21 +8,21 @@ Box.Application.addModule('new-transaction',function(context){
 		this.description=description;
 		this.timestamp=timestamp;
 	};
-	var moduleElement,utilities,db,transactions,category,type,currentAccount;
+	var moduleElement,utilities,db,transactions,category,type,currentAccount,globalVars;
 	return{
+		messages:['addTransaction'],
 		init:function(){
 			moduleElement=context.getElement();
 			utilities=context.getService('utilities');
 			db=context.getService('db');
+			globalVars=context.getService('globals');
 			transactions=db.getData('transactions');
 			// categories=db.getData('categories');
 			this.createNewTransaction();
 			$("#view-title").text("New Transaction");
-			currentAccount=0;
+			currentAccount=globalVars.update('currentAccount');
 			// console.log(context.setGlobalConfig('currentAccount',1));
-			console.log(context.getGlobalConfig('currentAccount'));
-			// transactions[currentAccount][day]=new Transaction(0,'-1','Misc',null,"Test",time);
-			// console.log(transactions);
+			console.log(currentAccount);
 		},
 		createNewTransaction:function(){
 			// type,category,mode,description,submit
@@ -52,19 +52,18 @@ Box.Application.addModule('new-transaction',function(context){
 			$(moduleElement).append(div);
 			console.log($(moduleElement));
 		},
-		addTransaction:function(){
-			var amount=moduleElement.querySelector('[data-type="input-amount"]');
-			if(amount.value=="" || !(category) || !(type))
-				return;
-			var description=moduleElement.querySelector('[data-type="input-description"]');
+		addTransaction:function(data){
 			var day=utilities.getCurrentDateCode();
 			var time=utilities.getCurrentTimeCode();
+			if(!(parseInt(data.amount) && parseInt(data.type)>0 && parseInt(data.category)>=0))
+				return;
+			if(!transactions[currentAccount])
+				transactions[currentAccount]={};
 			if(!transactions[currentAccount][day])
 				transactions[currentAccount][day]=[];
-			transactions[currentAccount][day].push(new Transaction(transactions.count,type,category,amount.value,description.value,time));
+			transactions[currentAccount][day].push(new Transaction(transactions.count,data.type,data.category,data.amount,data.description,time));
 			transactions.count++;
 			console.log(transactions);
-			amount.value=description.value="";
 			db.setData('transactions',transactions);
 		},
 		onclick:function(event,element,elementType){
@@ -80,7 +79,17 @@ Box.Application.addModule('new-transaction',function(context){
 				}
 			}
 			else if(elementType=='btn-submit-transaction'){
-				this.addTransaction();
+				var amount=moduleElement.querySelector('[data-type="input-amount"]');
+				if(amount.value=="" || !(category) || !(type))
+					return;
+				var description=moduleElement.querySelector('[data-type="input-description"]');
+				var data={};
+				data['type']=type;
+				data['category']=category;
+				data['amount']=amount.value;
+				data['description']=description.value;
+				amount.value=description.value="";
+				this.addTransaction(data);
 			}
 		},
 		onkeydown:function(event,element,elementType){
@@ -88,6 +97,11 @@ Box.Application.addModule('new-transaction',function(context){
 				console.log(event.keyCode);
 				if(!((event.keyCode>=48 && event.keyCode<=57)||event.keyCode==190||event.keyCode==9))
 					event.preventDefault();
+			}
+		},
+		onmessage:function(message,data){
+			if(message=='addTransaction'){
+				this.addTransaction(data);
 			}
 		},
 		destroy:function(){

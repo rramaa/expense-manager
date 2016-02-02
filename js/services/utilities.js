@@ -16,6 +16,7 @@ Box.Application.addService('utilities',function(application){
 	Colors.push(new Color("","ccd9ff"));
 	var db=application.getService('db');
 	var categories=db.getData('categories');
+	var accounts=db.getData('accounts');
 	var dropdownParameters=function(divDataType,buttonDisplay,anchorDisplay,anchorDataType){
 		this.divDataType=divDataType;
 		this.buttonDisplay=buttonDisplay;
@@ -28,10 +29,23 @@ Box.Application.addService('utilities',function(application){
 		catArray[0].push(categories.data[key].name);
 		catArray[1].push(categories.data[key].id);
 	}
+	var accountArray=[[],[]];
+	for(var key in accounts.data){
+		accountArray[0].push(accounts.data[key].name);
+		accountArray[1].push(accounts.data[key].id);
+	}
 	Dropdowns['type']=new dropdownParameters("select-type",'Expense/Income',['Expense','Income'],[1,2]);
 	Dropdowns['category']=new dropdownParameters("select-category",'Select Category',catArray[0],catArray[1]);
+	Dropdowns['account']=new dropdownParameters("select-account",'Switch Account',accountArray[0],accountArray[1]);
 	console.log(catArray);
 	return {
+		isUnique:function(data,toFind){
+			for(var key in data.data){
+				if(data.data[key].name.toUpperCase()==toFind.toUpperCase())
+					return false;
+			}
+			return true;
+		},
 		capitalizeFirstLetter:function(text){
 			return text.charAt(0).toUpperCase() + text.slice(1);
 		},
@@ -66,6 +80,12 @@ Box.Application.addService('utilities',function(application){
 			catArray[0].push(categories.data[categories.count-1].name);
 			catArray[1].push(categories.data[categories.count-1].id);
 			Dropdowns['category']=new dropdownParameters("select-category",'Select Category',catArray[0],catArray[1]);
+		},
+		updateAccount:function(){
+			accounts=db.getData('accounts');
+			accountArray[0].push(accounts.data[accounts.count-1].name);
+			accountArray[1].push(accounts.data[accounts.count-1].id);
+			Dropdowns['account']=new dropdownParameters("select-account",'Switch Account',accountArray[0],accountArray[1]);
 		},
 		createElement:function(type,innerHTML,id,Class,dataType,dataNoteId){
 			var element=document.createElement(type);

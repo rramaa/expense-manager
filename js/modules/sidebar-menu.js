@@ -2,10 +2,10 @@ Box.Application.addModule('sidebar-menu',function(context){
 	'use strict';
 	var db,moduleElement,moduleToStart,modules,accounts,categories,transactions;
 	return{
+		messages:['startModule'],
 		init:function(){
+			$("#view-title").text("Choose an option from menu");
 			modules=document.getElementById('content');
-			// Box.Application.startAll(modules);
-			// Box.Application.stopAll(modules);
 			db=context.getService('db');
 			accounts=db.getData('accounts');
 			categories=db.getData('categories');
@@ -14,20 +14,25 @@ Box.Application.addModule('sidebar-menu',function(context){
 			moduleElement=context.getElement();
 			// $("#view-title").text("Add new Category");
 		},
+		startModule:function(moduleName){
+			if(moduleToStart){
+				Box.Application.stopAll(modules);
+				moduleToStart.removeAttribute('data-module');
+				moduleToStart.removeAttribute("class");
+			}
+			moduleToStart=document.querySelector('[data-module-name="'+moduleName+'"]');
+			moduleToStart.setAttribute('data-module',moduleName);
+			moduleToStart.setAttribute("class","show");
+			Box.Application.startAll(modules);
+		},
 		onclick:function(event,element,elementType){
 			if(elementType!=""){
-				if(moduleToStart){
-					// console.log(moduleToStart);
-					Box.Application.stop(moduleToStart);
-					moduleToStart.removeAttribute("class");
-				}
-				else{
-					Box.Application.stopAll(modules);
-				}
-				moduleToStart=document.querySelector('[data-module="'+elementType+'"]');
-				moduleToStart.setAttribute("class","show");
-				// console.log(moduleToStart);
-				Box.Application.start(moduleToStart);
+				context.broadcast('startModule',elementType);
+			}
+		},
+		onmessage:function(message,data){
+			if(message=='startModule'){
+				this.startModule(data);
 			}
 		},
 		destroy:function(){

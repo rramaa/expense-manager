@@ -26,12 +26,16 @@ Box.Application.addModule('add-account',function(context){
 		addAccount:function(value){
 			if(value!=""){
 				value=utilities.capitalizeFirstLetter(value);
-				var account=new Account(accounts.count,value);
-				accounts.count++;
-				accounts.data.push(account);
-				db.setData('accounts',accounts);
-				// utilities.updateCategory();
-				context.broadcast('accountAdded',account);
+				value=utilities.cleanUp(value);
+				if(utilities.isUnique(accounts,value)){
+					var account=new Account(accounts.count,value);
+					accounts.count++;
+					accounts.data.push(account);
+					db.setData('accounts',accounts);
+					utilities.updateAccount();
+					// utilities.updateCategory();
+					context.broadcast('accountAdded',account);
+				}
 			}
 		},
 		onclick:function(event,element,elementType){
@@ -44,6 +48,7 @@ Box.Application.addModule('add-account',function(context){
 		onkeydown:function(event,element,elementType){
 			if(event.keyCode==13){
 				if(elementType=="add-account-input"){
+					var inputEl=moduleElement.querySelector('[data-type="add-account-input"]');
 					context.broadcast('addAccount',inputEl.value);
 					element.value="";
 				}
