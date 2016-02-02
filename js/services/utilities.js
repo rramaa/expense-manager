@@ -16,13 +16,32 @@ Box.Application.addService('utilities',function(application){
 	Colors.push(new Color("","ccd9ff"));
 	var db=application.getService('db');
 	var categories=db.getData('categories');
+	var dropdownParameters=function(divDataType,buttonDisplay,anchorDisplay,anchorDataType){
+		this.divDataType=divDataType;
+		this.buttonDisplay=buttonDisplay;
+		this.anchorDisplay=anchorDisplay;
+		this.anchorDataType=anchorDataType;
+	};
+	var Dropdowns=[];
+	var catArray=[[],[]];
+	for(var key in categories.data){
+		catArray[0].push(categories.data[key].name);
+		catArray[1].push(categories.data[key].id);
+	}
+	Dropdowns['type']=new dropdownParameters("select-type",'Expense/Income',['Expense','Income'],[1,2]);
+	Dropdowns['category']=new dropdownParameters("select-category",'Select Category',catArray[0],catArray[1]);
+	console.log(catArray);
 	return {
 		capitalizeFirstLetter:function(text){
 			return text.charAt(0).toUpperCase() + text.slice(1);
 		},
 		getCurrentDateCode:function(){
 			var date=new Date();
-			return date.getDay().toString()+date.getMonth().toString()+date.getYear().toString();
+			return date.getDate().toString()+date.getMonth().toString()+date.getYear().toString();
+		},
+		getCurrentTimeCode:function(){
+			var date=new Date();
+			return date.getTime().toString();
 		},
 		changeUrl:function(URL){
 			return URL.toLowerCase().replace(" ","-");
@@ -44,6 +63,9 @@ Box.Application.addService('utilities',function(application){
 		},
 		updateCategory:function(){
 			categories=db.getData('categories');
+			catArray[0].push(categories.data[categories.count-1].name);
+			catArray[1].push(categories.data[categories.count-1].id);
+			Dropdowns['category']=new dropdownParameters("select-category",'Select Category',catArray[0],catArray[1]);
 		},
 		createElement:function(type,innerHTML,id,Class,dataType,dataNoteId){
 			var element=document.createElement(type);
@@ -59,22 +81,11 @@ Box.Application.addService('utilities',function(application){
 				element.setAttribute('data-note-id',dataNoteId);
 			return element;
 		},
-		createDropdownElement:function(id,type){
+		createDropdownElement:function(type){
 			var frag=document.createDocumentFragment();
 			var div,button,data;
-			if(type=="color"){
-				div=this.createElement('div',null,null,"dropdown","change-color");
-				button=this.createElement('button',"Select Color",null,"btn btn-primary dropdown-toggle");
-				data=Colors;
-			}
-			else if(type=="cat"){
-				div=this.createElement('div',null,null,"dropdown","change-cat");
-				if(id==1)
-					button=this.createElement('button',"Select Category",null,"btn btn-primary dropdown-toggle");
-				else
-					button=this.createElement('button',categories.data[id-1].name,null,"btn btn-primary dropdown-toggle");
-				data=categories.data;
-			}
+			div=this.createElement('div',null,null,"dropdown",Dropdowns[type].divDataType);
+			button=this.createElement('button',Dropdowns[type].buttonDisplay,null,"btn btn-primary dropdown-toggle");
 			frag.appendChild(div);
 			button.setAttribute("type","button");
 			button.setAttribute("data-toggle","dropdown");
@@ -83,29 +94,14 @@ Box.Application.addService('utilities',function(application){
 			button.appendChild(span);
 			var ul=this.createElement('ul',null,null,"dropdown-menu");
 			div.appendChild(ul);
-			for(var key in data){
+			for(var key in Dropdowns[type].anchorDisplay){
 				var li=this.createElement('li');
 				var a;
-				
-				if(type=="color"){
-					a=this.createElement('a',data[key].name,null,null,key);
-					a.setAttribute("data-color-id",data[key].hash);
-					li.style.backgroundColor="#"+data[key].hash;
-				}
-				else if(type=="cat"){
-					a=this.createElement('a',data[key].name,null,null,data[key].id);
-					a.setAttribute("data-cat-id",data[key].id);
-				}
-				a.setAttribute("href","#");
+				a=this.createElement('a',Dropdowns[type].anchorDisplay[key],null,null,Dropdowns[type].anchorDataType[key]);
 				li.appendChild(a);
 				ul.appendChild(li);
 			}
-			if(type=="color"){
-				return [frag,"#"+Colors[id].hash];
-			}
-			else if(type=="cat"){
-				return frag;
-			}
+			return frag;
 		}
 	};
 });

@@ -26,7 +26,17 @@ Box.Application.addService('db',function(application){
 		getData:function(key){
 			var data=localStorage.getItem(key);
 			data=JSON.parse(data);
-			return data;
+			if(data)
+				return data;
+			else if(key=='accounts'){
+				data=this.initializeAccount();
+			}
+			else if(key=='categories'){
+				data=this.initializeCategories();
+			}
+			else if(key=='transactions'){
+				data=this.initializeTransactions(this.getData('accounts'));
+			}
 		},
 		setData:function(key,data){
 			localStorage.setItem(key,JSON.stringify(data));
@@ -43,8 +53,8 @@ Box.Application.addService('db',function(application){
 		},
 		initializeCategories:function(){
 			categories=new Categories();
-			categories.count++;
 			categories.data.push(new Category(categories.count,"Miscellaneous"));
+			categories.count++;
 			this.setData("categories",categories);
 			return categories;
 		},

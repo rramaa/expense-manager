@@ -4,23 +4,15 @@ Box.Application.addModule('sidebar-menu',function(context){
 	return{
 		init:function(){
 			modules=document.getElementById('content');
-			Box.Application.startAll(modules);
-			Box.Application.stopAll(modules);
+			// Box.Application.startAll(modules);
+			// Box.Application.stopAll(modules);
 			db=context.getService('db');
 			accounts=db.getData('accounts');
-			if(!accounts){
-				accounts=db.initializeAccount();
-			}
-			$("#account-selected").text(accounts.data[0].name);
 			categories=db.getData('categories');
-			if(!categories){
-				categories=db.initializeCategories();
-			}
 			transactions=db.getData('transactions');
-			if(!transactions){
-				transactions=db.initializeTransactions(accounts);
-			}
+			$("#account-selected").text(accounts.data[0].name);
 			moduleElement=context.getElement();
+			// $("#view-title").text("Add new Category");
 		},
 		onclick:function(event,element,elementType){
 			if(elementType!=""){

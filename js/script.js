@@ -1,1 +1,1 @@
-Box.Application.init({debug:true});
+Box.Application.init({debug:true,currentAccount:0});

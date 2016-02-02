@@ -26,6 +26,7 @@ Box.Application.addModule('calculator',function(context){
 		evaluateExpression:function(){
 			var ans;
 			try{
+				// ans=eval("this.createCalculator()");
 				ans=eval(exp);
 				$(calculatorScreen).val(ans);
 				exp=ans;

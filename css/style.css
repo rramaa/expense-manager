@@ -51,7 +51,10 @@
 body{
 	font-family: Verdana;
 }
-textarea:focus,button:focus{
+textarea{
+	resize:none;
+}
+textarea:focus,button:focus,input:focus{
 	outline-style: none;
 }
 #main{
@@ -125,4 +128,43 @@ button.calculator-buttons {
     background-color: #E4FFE6;
     font-family: Courier;
     font-size: 1em;
+}
+.add-category-div,.add-account-div{
+	display: block !important;
+	width: 
+}
+.new-transaction-div{
+	display: block !important;
+}
+.new-transaction-div div{
+	display: inline-block !important;
+    height: auto !important;
+    width: 166px;
+    border: none !important;
+}
+input{
+	padding: 5px;
+	margin: 5px;
+}
+a{
+	cursor: pointer;
+}
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+ 
+.btn-primary {
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0px;
+}
+ 
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #313131;
+}
+ 
+.btn-primary:active, .btn-primary.active {
+    background: #313131;
+    box-shadow: none;
 }
