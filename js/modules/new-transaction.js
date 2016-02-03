@@ -47,13 +47,34 @@ Box.Application.addModule('new-transaction',function(context){
 			var elem=utilities.createElement('textarea',null,null,null,'input-description');
 			$(div).append(elem);
 			$(div).append($('<br>'));
+
+			var text=utilities.createElement('span','Date(Leave blank if NA):');
+			$(div).append(text);
+			var elem=utilities.createElement('input',null,null,null,'input-date','dd-mm-yyyy');
+			$(div).append(elem);
+			$(div).append($('<br>'));
+
 			var elem=utilities.createElement('button',"Submit",null,null,'btn-submit-transaction');
 			$(div).append(elem);
 			$(moduleElement).append(div);
 			console.log($(moduleElement));
 		},
 		addTransaction:function(data){
-			var day=utilities.getCurrentDateCode();
+			var day;
+			console.log(data.date);
+			if(data.date){
+				var temp=utilities.validateDay(data.date);
+				if(temp[0])
+				{
+					day=temp[1];
+				}
+				else{
+					day=utilities.getCurrentDateCode();
+				}
+			}
+			else{
+				day=utilities.getCurrentDateCode();
+			}
 			var time=utilities.getCurrentTimeCode();
 			if(!(parseInt(data.amount) && parseInt(data.type)>0 && parseInt(data.category)>=0))
 				return;
@@ -63,7 +84,7 @@ Box.Application.addModule('new-transaction',function(context){
 				transactions[currentAccount][day]=[];
 			transactions[currentAccount][day].push(new Transaction(transactions.count,data.type,data.category,data.amount,data.description,time));
 			transactions.count++;
-			console.log(transactions);
+			// console.log(day);
 			db.setData('transactions',transactions);
 		},
 		onclick:function(event,element,elementType){
@@ -83,11 +104,13 @@ Box.Application.addModule('new-transaction',function(context){
 				if(amount.value=="" || !(category) || !(type))
 					return;
 				var description=moduleElement.querySelector('[data-type="input-description"]');
+				var date=moduleElement.querySelector('[data-type="input-date"]');
 				var data={};
 				data['type']=type;
 				data['category']=category;
 				data['amount']=amount.value;
 				data['description']=description.value;
+				data['date']=date.value;
 				amount.value=description.value="";
 				this.addTransaction(data);
 			}
@@ -95,7 +118,12 @@ Box.Application.addModule('new-transaction',function(context){
 		onkeydown:function(event,element,elementType){
 			if(elementType=="input-amount"){
 				console.log(event.keyCode);
-				if(!((event.keyCode>=48 && event.keyCode<=57)||event.keyCode==190||event.keyCode==9))
+				if(!((event.keyCode>=48 && event.keyCode<=57)||event.keyCode==190||event.keyCode==9||event.keyCode==8||(event.keyCode>=37 && event.keyCode<=40)))
+					event.preventDefault();
+			}
+			if(elementType=='input-date'){
+				console.log(event.keyCode);
+				if(!((event.keyCode>=48 && event.keyCode<=57)||event.keyCode==189||event.keyCode==9||event.keyCode==8||(event.keyCode>=37 && event.keyCode<=40)))
 					event.preventDefault();
 			}
 		},

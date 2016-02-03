@@ -46,12 +46,28 @@ Box.Application.addService('utilities',function(application){
 			}
 			return true;
 		},
+		validateDay:function(date){
+			date=date.split('-');
+			if(date.length==3){
+				date=new Date(date[2],date[1]-1,date[0]);
+				if(date!="Invalid Date"){
+					return [true,this.getCurrentDateCode(date)];
+				}
+			}
+			return false;
+		},
+		convertDayCode:function(){},
 		capitalizeFirstLetter:function(text){
 			return text.charAt(0).toUpperCase() + text.slice(1);
 		},
-		getCurrentDateCode:function(){
-			var date=new Date();
-			return date.getDate().toString()+date.getMonth().toString()+date.getYear().toString();
+		getCurrentDateCode:function(inputDate){
+			if(inputDate){
+				return inputDate.getYear().toString()+'-'+inputDate.getMonth().toString()+'-'+inputDate.getDate().toString();
+			}
+			else{
+				var date=new Date();
+				return date.getYear().toString()+'-'+date.getMonth().toString()+'-'+date.getDate().toString();
+			}
 		},
 		getCurrentTimeCode:function(){
 			var date=new Date();
@@ -87,7 +103,7 @@ Box.Application.addService('utilities',function(application){
 			accountArray[1].push(accounts.data[accounts.count-1].id);
 			Dropdowns['account']=new dropdownParameters("select-account",'Switch Account',accountArray[0],accountArray[1]);
 		},
-		createElement:function(type,innerHTML,id,Class,dataType,dataNoteId){
+		createElement:function(type,innerHTML,id,Class,dataType,placeholder){
 			var element=document.createElement(type);
 			if(innerHTML || innerHTML==0)
 				element.innerHTML=innerHTML;
@@ -97,8 +113,8 @@ Box.Application.addService('utilities',function(application){
 				element.setAttribute('class',Class);
 			if(dataType || dataType==0)
 				element.setAttribute('data-type',dataType);
-			if(dataNoteId)
-				element.setAttribute('data-note-id',dataNoteId);
+			if(placeholder)
+				element.setAttribute('placeholder',placeholder);
 			return element;
 		},
 		createDropdownElement:function(type){
